@@ -4,6 +4,8 @@ import {changeEmail, changePass, login} from "../../redux/action-creators/login"
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import {Redirect} from "react-router";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faTable, faExclamationCircle} from '@fortawesome/free-solid-svg-icons';
 
 const Wrapper = styled.div`
     display: flex;
@@ -52,7 +54,20 @@ const FormWrapper = styled.div`
     flex-direction: column;
 `;
 
-const LoginForm = ({email, pass, onChangeEmail, onChangePass, onLogin, login}) => {
+const Error = styled.div`
+   margin-top: 20px;
+   padding: 5px;
+   border-radius: 5px;
+   background-color: #fb4848;
+   color: #fff;
+   font-size: 14px;
+`;
+
+const Icon = styled(FontAwesomeIcon)`
+    margin-right: 3px;
+`;
+
+const LoginForm = ({email, pass, onChangeEmail, onChangePass, onLogin, login, error, errorMessage}) => {
     return (
         <>
             {login &&  <Redirect to={'/test'}/>}
@@ -63,8 +78,10 @@ const LoginForm = ({email, pass, onChangeEmail, onChangePass, onLogin, login}) =
                         <Input onChange={onChangeEmail} value={email} placeholder={'Email'}/>
                         <Input onChange={onChangePass} value={pass} placeholder={'Пароль'}/>
                         <Button onClick={(e) => onLogin(e, email, pass)}>Войти</Button>
+                        {error && <Error><Icon icon={faExclamationCircle}/>Произошла ошибка</Error>}
                     </FormWrapper>
                 </form>
+
             </Wrapper>
         </>
     )
@@ -77,13 +94,17 @@ LoginForm.propTypes = {
     onChangePass: PropTypes.func,
     onLogin: PropTypes.func,
     login: PropTypes.bool,
+    error: PropTypes.bool,
+    errorMessage: PropTypes.errorMessage,
 };
 
 const mapStateToProps = (state) => {
     return {
         email: state.login.email,
         pass: state.login.pass,
-        login: state.login.login
+        login: state.login.login,
+        error: state.login.error,
+        errorMessage: state.login.errorMessage
     }
 };
 

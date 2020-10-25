@@ -13,11 +13,13 @@ export default function loginReducer(state = initialState, action) {
             return {
                 ...state,
                 email: action.payload,
+                error: false,
             };
         case 'CHANGE_PASS':
             return {
                 ...state,
-                pass: action.payload
+                pass: action.payload,
+                error: false,
             };
         case 'LOGIN':
             return {
