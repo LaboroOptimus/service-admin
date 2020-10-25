@@ -1,19 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Form} from "./Form";
+import LoginForm from "./LoginForm";
 
 const Wrapper = styled.div`
     padding: 100px;;
 `;
 
-
-
-const Login = () => {
+const LoginPage = () => {
     return (
         <Wrapper>
-            <Form/>
+            <LoginForm/>
         </Wrapper>
     )
 };
 
-export {Login}
+export {LoginPage}

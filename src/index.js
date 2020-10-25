@@ -3,13 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {createStore} from 'redux';
+import {applyMiddleware, createStore} from 'redux';
 import {Provider} from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
 import reducer from './redux/reducers/index'
 import {BrowserRouter} from "react-router-dom";
+import rootSaga from "./redux/saga/rootSaga";
 
-const store = createStore(reducer);
-console.log(store.getState());
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+    reducer,
+    applyMiddleware(sagaMiddleware)
+);
 
 ReactDOM.render(
     <React.StrictMode>
@@ -22,6 +28,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
+sagaMiddleware.run(rootSaga);
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
