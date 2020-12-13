@@ -1,11 +1,14 @@
-import {all, call, put, takeEvery} from 'redux-saga/effects';
+import {all} from 'redux-saga/effects';
 import {watchLogin} from "./loginSaga";
-import {watchAddRequest} from "./requestSaga";
+import {watchAddRequest, watchLoadRequests, watchDeleteRequest, watchChangeStatus} from "./requestSaga";
 
 
 export default function* rootSaga() {
     yield all([
         watchLogin(),
-        watchAddRequest()
+        watchAddRequest(),
+        watchLoadRequests(),
+        watchDeleteRequest(),
+        watchChangeStatus(),
     ])
 }

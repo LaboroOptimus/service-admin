@@ -27,3 +27,24 @@ export const onAddNewRequest = (e,name, customer) => {
         payload: {id, name, customer, status, date: today}
     }
 };
+
+export const loadRequests = () => {
+    return {
+        type: 'LOAD_REQUESTS'
+    }
+};
+
+export const deleteRequest = (id) => {
+    console.log('удаляем', id);
+    return {
+        type: 'DELETE_REQUEST',
+        payload: id
+    }
+};
+
+export const changeStatus = (id, status) => {
+    return {
+        type: 'CHANGE_STATUS',
+        payload: {id, status}
+    }
+};

@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSortDown} from '@fortawesome/free-solid-svg-icons'
+import {connect} from "react-redux";
+import {deleteRequest, changeStatus} from "../../redux/action-creators/request";
+import PropTypes from "prop-types";
 
 const Arrow = styled(FontAwesomeIcon)`
     font-size: 14px;
@@ -55,19 +58,38 @@ const IconWrapper = styled.span`
     top: -2px;
 `;
 
-export const Dropdown = (id) => {
-    const test = () => {
-        console.log(id)
-    };
-
+const Dropdown = ({id, onDeleteRequest, onChangeStatus}) => {
     return (
         <DropdownWrapper>
             <DropdownBtn>Действие <IconWrapper><Arrow icon={faSortDown}/></IconWrapper></DropdownBtn>
             <DropdownContent>
-                <Link onClick={test}>Оплачено</Link>
-                <Link onClick={test}>В работу</Link>
-                <Link onClick={test}>Закрыть</Link>
+                <Link onClick={()=>onChangeStatus(id, 'в работу')}>В работу</Link>
+                <Link onClick={()=>onChangeStatus(id, 'выполнена')}>Выполнена</Link>
+                <Link onClick={()=>onChangeStatus(id, 'оплачено')}>Оплачено</Link>
+                <Link onClick={()=>onChangeStatus(id, 'возврат')}>Возврат</Link>
+                <Link onClick={()=>onDeleteRequest(id)}>Закрыть</Link>
             </DropdownContent>
         </DropdownWrapper>
     )
 };
+
+Dropdown.propTypes = {
+    onDeleteRequest: PropTypes.func,
+    onChangeStatus: PropTypes.func,
+    id: PropTypes.number
+};
+
+const mapStateToProps = state => {
+    return {
+
+    }
+};
+
+const mapDispatchToProps = dispatch => ({
+    onDeleteRequest: (id) => dispatch(deleteRequest(id)),
+    onChangeStatus: (id,status)=> dispatch(changeStatus(id,status))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dropdown)
+

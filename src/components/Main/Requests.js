@@ -1,93 +1,56 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import {Dropdown} from "../Main/Dropdown";
 import {Menu} from "../Main/Menu";
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
+import {loadRequests} from "../../redux/action-creators/request";
+import Items from "./Items";
+
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
 `;
 
-/* const Head = styled.div`
-    font-weight: bold;
-    justify-content: space-between;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    margin: 10px 30px;
-`; */
-
 const Title = styled.h1`
     margin: 0 0 20px 30px;
     text-align: left;
 `;
 
-const Item = styled.div`
-    display: flex;
-    padding: 10px 20px;
-    margin: 10px 30px;
-    border: 1px solid #eee;
-    border-radius: 10px;
-    justify-content: space-between;
-`;
-
-const Id = styled.span`
-    padding: 5px;
-    font-size: 14px;
-`;
-
-const Name = styled.span`
-    padding: 5px;
-    font-size: 14px;
-`;
-
-const Customer = styled.span`
-    padding: 5px;
-    font-size: 14px;
-`;
-
-const Date = styled.span`
-    padding: 5px;
-    font-size: 14px;
-`;
-
-const Status = styled.span`
-    color: #fff;
-    background-color: #73bbed;
-    padding: 5px 10px;
-    font-size: 14px;
-    border-radius: 5px;
-`;
-
-export const Requests = () => {
+const Requests = ({onLoadRequests, isLoad, requests}) => {
+    useEffect(() => {
+        onLoadRequests();
+    }, [isLoad]);
     return (
         <Wrapper>
             <Menu/>
             <Title>Все заявки</Title>
-            <Item>
-                <Id>123</Id>
-                <Name>Ремонт компьютера Apple</Name>
-                <Customer>Иванов Иван Иванович</Customer>
-                <Date>12.03.2020</Date>
-                <Status>Принят в работу</Status>
-                <Dropdown id={1}/>
-            </Item>
-            <Item>
-                <Id>123</Id>
-                <Name>Ремонт компьютера Apple</Name>
-                <Customer>Иванов Иван Иванович</Customer>
-                <Date>12.03.2020</Date>
-                <Status>Принят в работу</Status>
-                <Dropdown id={2}/>
-            </Item>
-            <Item>
-                <Id>123</Id>
-                <Name>Ремонт компьютера Apple</Name>
-                <Customer>Иванов Иван Иванович</Customer>
-                <Date>12.03.2020</Date>
-                <Status>Принят в работу</Status>
-                <Dropdown id={3}/>
-            </Item>
+            {isLoad && <Items items={requests}/>}
         </Wrapper>
     )
 };
+
+Requests.propTypes = {
+    onLoadRequests: PropTypes.func,
+    isLoad: PropTypes.bool,
+    requests: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        customer: PropTypes.string,
+        status: PropTypes.string,
+        create: PropTypes.number,
+    })),
+};
+
+const mapStateToProps = (state) => {
+    return {
+        requests: state.request.requests,
+        isLoad: state.request.isLoad
+    }
+};
+
+const mapDispatchToProps = dispatch => ({
+    onLoadRequests: () => dispatch(loadRequests())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Requests)

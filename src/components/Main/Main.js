@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {Requests} from "./Requests";
+import Requests from "./Requests";
 import {LoginPage} from "../Login/LoginPage";
 import New from "./New";
 
