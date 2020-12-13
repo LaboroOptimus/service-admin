@@ -17,31 +17,29 @@ const Input = styled.input`
     width: 200px;
     margin: 10px 0 10px 0;
     padding: 10px 20px;
-    border: 2px solid #eee;
-    border-radius: 10px;
+    border: 1px solid #eee;
+    border-radius: 5px;
     outline:none;
     
     :focus {
-        border: 2px solid #5e69e9;
+        border: 1px solid #73bbed;
     }
     
 `;
 
 const Button = styled.button`
     color: #fff;
-    background-color: #5e69e9;
-    border: 2px solid #5e69e9;
+    background-color: #73bbed;
+    border: 2px solid #73bbed;
     padding: 10px 20px;
     border-radius: 10px;
     font-size: 14px;
-    font-weight: 700;
     margin-top: 10px;
     
     :hover {
         cursor: pointer;
-        border: 2px solid #5e69e9;
-        color: #5e69e9;
-        background-color: transparent;
+        border: 2px solid #a0ceed;
+        background-color: #a0ceed;
     }
     
     :focus {
@@ -70,13 +68,13 @@ const Icon = styled(FontAwesomeIcon)`
 const LoginForm = ({email, pass, onChangeEmail, onChangePass, onLogin, login, error, errorMessage}) => {
     return (
         <>
-            {login &&  <Redirect to={'/test'}/>}
+            {login &&  <Redirect to={'/requests'}/>}
             <Wrapper>
                 <form>
                     <FormWrapper>
                         <h2>Вход в систему</h2>
                         <Input onChange={onChangeEmail} value={email} placeholder={'Email'}/>
-                        <Input onChange={onChangePass} value={pass} placeholder={'Пароль'}/>
+                        <Input onChange={onChangePass} value={pass} type="password" placeholder={'Пароль'}/>
                         <Button onClick={(e) => onLogin(e, email, pass)}>Войти</Button>
                         {error && <Error><Icon icon={faExclamationCircle}/>Произошла ошибка</Error>}
                     </FormWrapper>

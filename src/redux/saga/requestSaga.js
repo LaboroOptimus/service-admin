@@ -1,12 +1,28 @@
-import {all, call, put, takeEvery} from 'redux-saga/effects';
+import {call, put, takeEvery} from "@redux-saga/core/effects";
 import fire from "../../config/Fire";
 
-export function* watchLogin() {
-    yield takeEvery('LOGIN', workerLogin);
+
+export function* watchAddRequest() {
+    yield takeEvery('ADD_REQUEST', workerAddRequest);
 }
 
-export function * workerLogin(data) {
+export function * workerAddRequest(data) {
     try {
+        yield call(() => {
+                return fire.database().ref('requests/').push({
+                    id: data.payload.id,
+                    name: data.payload.name,
+                    customer: data.payload.customer,
+                    date: data.payload.date,
+                    status: data.payload.status,
+                });
+            }
+        );
+        yield put({type: 'ADD_SUCCESS'});
+    } catch (e) {
+        yield put({type: 'ADD_ERROR', payload: e.code});
+    }
+    /*try {
         const newData = yield call(() => {
                 return fire.auth().signInWithEmailAndPassword(data.payload.email, data.payload.pass);
             }
@@ -22,5 +38,5 @@ export function * workerLogin(data) {
             errorMessage = 'Произошла ошибка, попробуйте еще раз';
         }
         yield put({type: 'LOGIN_ERROR', payload: errorMessage});
-    }
+    }*/
 }
